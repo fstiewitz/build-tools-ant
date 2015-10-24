@@ -1,0 +1,21 @@
+{
+  "name": "build-tools-ant",
+  "main": "./lib/build-tools-ant",
+  "version": "0.0.0",
+  "description": "Execute targets from apache ant config files",
+  "repository": "https://github.com/atom/build-tools-ant",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "atom-space-pen-views": "^2.0.0"
+  },
+  "providedServices": {
+    "build-tools.provider": {
+      "versions": {
+        "1.0.0": "provideProvider"
+      }
+    }
+  }
+}
