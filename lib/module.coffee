@@ -1,13 +1,17 @@
 Command = null
 
+path = null
+
 {$, View, TextEditorView} = require 'atom-space-pen-views'
 
 module.exports =
   activate: (command) ->
     Command = command
+    path = require 'path'
 
   deactivate: ->
     Command = null
+    path = null
 
   name: 'Ant File'
   singular: 'Ant Target'
@@ -48,7 +52,7 @@ module.exports =
           return reject(@error) if @error?
           return resolve() if @commands?
           @commands = []
-          require('fs').readFile require('path').resolve(@projectPath, file), 'utf8', (@error, data) =>
+          require('fs').readFile path.resolve(path.dirname(@filePath), file), 'utf8', (@error, data) =>
             return reject(new Error(@error)) if @error
             $(data).find('target').each (i, val) =>
               name = $(val).attr('name')
