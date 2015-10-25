@@ -58,9 +58,6 @@ module.exports =
               c.source = @filePath
               c.name = "ant #{name}"
               c.command = "ant -buildfile \"#{@config.file}\" #{name}"
-              c.stdout =
-                highlighting: 'hc'
-                profile: 'java'
               @commands.push c
             resolve()
         )
@@ -104,7 +101,7 @@ module.exports =
           protocommand.name = ''
           p = atom.views.getView(protocommand)
           p.sourceFile = @project.filePath
-          p.setBlacklist ['general', 'highlighting']
+          p.setBlacklist ['general', 'wildcards']
           p.setCallbacks(((out) =>
             @project.config.props = out
             @project.save()
