@@ -3,7 +3,7 @@
   "main": "./lib/build-tools-ant",
   "version": "0.0.0",
   "description": "Execute targets from apache ant config files",
-  "repository": "https://github.com/atom/build-tools-ant",
+  "repository": "https://github.com/deprint/build-tools-ant",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
