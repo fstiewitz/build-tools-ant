@@ -1,0 +1,40 @@
+<project basedir="." default="main">
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="compile">
+    <mkdir dir="${classes.dir}"/>
+    <javac classpathref="classpath" destdir="${classes.dir}" srcdir="${src.dir}" deprecation="on"/>
+    <copy todir="${classes.dir}">
+      <fileset dir="${src.dir}" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+  <target depends="compile" name="jar">
+    <mkdir dir="${jar.dir}"/>
+    <jar basedir="${classes.dir}" destfile="${jar.dir}/${ant.project.name}.jar">
+      <manifest>
+        <attribute name="Main-Class" value="${main-class}"/>
+        <attribute name="Class-Path" value="${manifest.class.path}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target depends="jar" name="run">
+    <java fork="true" classname="${main-class}">
+      <classpath>
+        <path refid="classpath"/>
+        <path location="${jar.dir}/${ant.project.name}.jar"/>
+      </classpath>
+      <arg value="${arg0}"/>
+      <arg value="${arg1}"/>
+      <arg value="${arg2}"/>
+    </java>
+  </target>
+
+  <target depends="clean,jar" name="clean-build"/>
+
+  <target depends="clean,run" name="main"/>
+
+</project>
