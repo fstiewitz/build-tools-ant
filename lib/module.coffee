@@ -32,7 +32,10 @@ module.exports =
       getCommandByIndex: (id) ->
         return @commands[id] if @commands?
         new Promise((resolve, reject) =>
-          @loadCommands(@config.file).then (=> resolve(@commands[id])), reject
+          @loadCommands(@config.file).then (=>
+            return reject() unless @commands[id]?
+            resolve(@commands[id])
+          ), reject
         )
 
       getCommandCount: ->
