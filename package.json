@@ -1,7 +1,7 @@
 {
   "name": "build-tools-ant",
   "main": "./lib/build-tools-ant",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Execute targets from apache ant config files",
   "repository": "https://github.com/deprint/build-tools-ant",
   "license": "MIT",
