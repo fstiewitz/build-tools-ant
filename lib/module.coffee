@@ -55,17 +55,16 @@ module.exports =
           return reject(@error) if @error?
           return resolve() if @commands?
           @commands = []
-          require('fs').readFile path.resolve(path.dirname(@filePath), file), 'utf8', (@error, data) =>
+          require('child_process').exec "ant -projecthelp -f '#{@config.file}'", {cwd: @projectPath}, (@error, out, err) =>
             return reject(new Error(@error)) if @error
-            $(data).find('target').each (i, val) =>
-              name = $(val).attr('name')
-              return unless name?
-              c = new Command(@config.props)
-              c.project = @projectPath
-              c.source = @filePath
-              c.name = "ant #{name}"
-              c.command = "ant -buildfile \"#{@config.file}\" #{name}"
-              @commands.push c
+            for line in out.split "\n"
+              if m = line.match(/^\s+(\S+)/)
+                c = new Command(@config.props)
+                c.project = @projectPath
+                c.source = @filePath
+                c.name ="ant #{m[1]}"
+                c.command = "ant -buildfile '#{@config.file}' #{m[1]}"
+                @commands.push c
             resolve()
         )
 
