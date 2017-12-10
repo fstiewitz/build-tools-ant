@@ -55,7 +55,7 @@ module.exports =
           return reject(@error) if @error?
           return resolve() if @commands?
           @commands = []
-          require('child_process').exec "ant -projecthelp -f '#{@config.file}'", {cwd: @projectPath}, (@error, out, err) =>
+          require('child_process').exec "ant -v -projecthelp -f '#{@config.file}'", {cwd: @projectPath}, (@error, out, err) =>
             return reject(new Error(@error)) if @error
             for line in out.split "\n"
               if m = line.match(/^\s+(\S+)/)
