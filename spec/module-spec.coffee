@@ -34,7 +34,7 @@ describe 'Command Provider: Ant File', ->
       expect(c.name).toBe 'ant clean'
       expect(c.project).toBe projectPath
       expect(c.source).toBe filePath
-      expect(c.command).toBe 'ant -buildfile "build.xml" clean'
+      expect(c.command).toBe 'ant -buildfile \'build.xml\' clean'
 
   it '::getCommandCount', ->
     waitsForPromise -> model.getCommandCount().then (count) ->
@@ -42,7 +42,7 @@ describe 'Command Provider: Ant File', ->
 
   it '::getCommandNames', ->
     waitsForPromise -> model.getCommandNames().then (names) ->
-      expect(names).toEqual ['ant clean', 'ant compile', 'ant jar', 'ant run', 'ant clean-build', 'ant main']
+      expect(names).toEqual ['ant clean', 'ant compile', 'ant jar', 'ant run', 'ant clean-build', 'ant main'].sort()
 
   describe 'View', ->
     view = null
