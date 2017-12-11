@@ -55,17 +55,31 @@ module.exports =
           return reject(@error) if @error?
           return resolve() if @commands?
           @commands = []
-          require('child_process').exec "ant -v -projecthelp -f '#{@config.file}'", {cwd: @projectPath}, (@error, out, err) =>
-            return reject(new Error(@error)) if @error
-            for line in out.split "\n"
-              if m = line.match(/^\s+(\S+)/)
+          if atom.config.get('build-tools-ant.provider') isnt 'legacy'
+            require('child_process').exec "ant #{if atom.config.get('build-tools-ant.provider') is 'vproj' then '-v' else ''} -projecthelp -f '#{@config.file}'", {cwd: @projectPath}, (@error, out, err) =>
+              return reject(new Error(@error)) if @error
+              for line in out.split "\n"
+                if m = line.match(/^\s+(\S+)/)
+                  c = new Command(@config.props)
+                  c.project = @projectPath
+                  c.source = @filePath
+                  c.name ="ant #{m[1]}"
+                  c.command = "ant -buildfile '#{@config.file}' #{m[1]}"
+                  @commands.push c
+              resolve()
+          else
+            require('fs').readFile path.resolve(path.dirname(@filePath), file), 'utf8', (@error, data) =>
+              return reject(new Error(@error)) if @error
+              $(data).find('target').each (i, val) =>
+                name = $(val).attr('name')
+                return unless name?
                 c = new Command(@config.props)
                 c.project = @projectPath
                 c.source = @filePath
-                c.name ="ant #{m[1]}"
-                c.command = "ant -buildfile '#{@config.file}' #{m[1]}"
+                c.name = "ant #{name}"
+                c.command = "ant -buildfile \"#{@config.file}\" #{name}"
                 @commands.push c
-            resolve()
+              resolve()
         )
 
   view:
